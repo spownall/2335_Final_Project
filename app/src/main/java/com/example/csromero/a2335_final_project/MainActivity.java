@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements KitchenControl.On
         switch (position){
             // TODO Create these UI classes
             case 0:
-                Intent intent = new Intent(this, MicrowaveControl class);
+                Intent intent = new Intent(this, MicrowaveControl.class);
                 startActivity(intent);
             case 1:
                 Intent intent1 = new Intent(this, FridgeControl class);
