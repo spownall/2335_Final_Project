@@ -10,4 +10,46 @@
         android:layout_height="match_parent"
         android:text="@string/hello_blank_fragment" />
 
+    <ListView
+        android:id="@+id/kitchen_list"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+
+<!--MICROWAVE -->
+    <ProgressBar
+        android:id="@+id/kitchen_ProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/kitchen_SetClock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/kitchen_StartTimer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/kitchen_StartStop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/kitchen_Cook"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <EditText
+        android:id="@+id/kitchen_EditText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!--Fridge -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/hello_blank_fragment" />
 </FrameLayout>

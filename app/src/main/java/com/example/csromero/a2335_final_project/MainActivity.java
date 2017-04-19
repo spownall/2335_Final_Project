@@ -1,5 +1,6 @@
 package com.example.csromero.a2335_final_project;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,7 +20,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements KitchenControl.OnFragmentListItemSelectedListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -86,6 +87,30 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * By implementing the FragmentListItemSelected listener, the class
+     * must implement this function.  The parameter is the position of the list
+     * item that was selected in the fragment.
+     * @param position
+     */
+
+    @Override
+    public void onFragmentListItemSelected(int position) {
+        switch (position){
+            // TODO Create these UI classes
+            case 0:
+                Intent intent = new Intent(this, MicrowaveControl class);
+                startActivity(intent);
+            case 1:
+                Intent intent1 = new Intent(this, FridgeControl class);
+                startActivity(intent);
+            case 2:
+                Intent intent2 = new Intent(this, LightControl class);
+                startActivity(intent);
+            case 3:
+        }
     }
 
     /**

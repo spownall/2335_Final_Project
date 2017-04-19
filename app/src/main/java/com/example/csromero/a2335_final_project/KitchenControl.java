@@ -7,6 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 
 /**
@@ -27,7 +36,12 @@ public class KitchenControl extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private OnFragmentListItemSelectedListener mListener;
+
+    // ui elements
+    private String[] arrayStrings = {"Microwave", "Fridge", "Light", "+"};
+    private ListView kitchenList;
+    private ArrayList<String> kitchenItemNameList = new ArrayList<>(Arrays.asList(arrayStrings));
 
     public KitchenControl() {
         // Required empty public constructor
@@ -63,25 +77,60 @@ public class KitchenControl extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_kitchen_control, container, false);
+        View view = inflater.inflate(R.layout.fragment_kitchen_control, container, false);
+
+        // get the listView UI element from the view
+        kitchenList = (ListView) view.findViewById(R.id.kitchen_list);
+
+        // create an array adapter to connect the listview and the arraylist of items
+        ArrayAdapter<String> kitchenAdapter =
+                new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, kitchenItemNameList);
+
+        kitchenList.setAdapter(kitchenAdapter);
+
+        // creates and sets the on item click listener
+        kitchenList.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String item = (String) kitchenList.getItemAtPosition(position);
+                //Toast.makeText(this,"You selected : " + item,Toast.LENGTH_SHORT).show();
+                if (mListener != null){
+                    mListener.onFragmentListItemSelected(position);
+                }
+            }
+        });
+
+
+        return view;
     }
 
+    /*
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
+    */
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        /*
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
+        }
+        */
+        if (context instanceof OnFragmentListItemSelectedListener) {
+            mListener = (OnFragmentListItemSelectedListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentListItemSelectedListener");
         }
     }
 
@@ -101,8 +150,15 @@ public class KitchenControl extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+
+    /*
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    */
+
+    public interface OnFragmentListItemSelectedListener {
+        public void onFragmentListItemSelected(int position);
     }
 }
