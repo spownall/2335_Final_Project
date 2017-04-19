@@ -104,11 +104,11 @@ public class MainActivity extends AppCompatActivity implements KitchenControl.On
                 Intent intent = new Intent(this, MicrowaveControl.class);
                 startActivity(intent);
             case 1:
-                Intent intent1 = new Intent(this, FridgeControl class);
-                startActivity(intent);
+                Intent intent1 = new Intent(this, FridgeControl.class);
+                startActivity(intent1);
             case 2:
-                Intent intent2 = new Intent(this, LightControl class);
-                startActivity(intent);
+                Intent intent2 = new Intent(this, LightControl.class);
+                startActivity(intent2);
             case 3:
         }
     }
@@ -159,10 +159,15 @@ public class MainActivity extends AppCompatActivity implements KitchenControl.On
         }
 
         @Override
+        // getItem is called to instantiate the fragment for the given page.
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            if (position >= 1){
+                // Return a PlaceholderFragment (defined as a static inner class below).
+                return PlaceholderFragment.newInstance(position + 1);
+            } else {
+                // return a kitchen control activity fragment
+                return KitchenControl.newInstance();
+            }
         }
 
         @Override
