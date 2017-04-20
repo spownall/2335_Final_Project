@@ -18,11 +18,12 @@ public class LightControl extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light_control);
         
-        // get the database object, read any previous entries, and update the UI as needed
-        progress = databaseClass.readEntry("light");
-        
         SeekBar lightBar = (SeekBar)findViewById(R.id.lightBar);
         final TextView displayText = (TextView)findViewById(R.id.displayText);
+        
+        // get the database object, read any previous entries, and update the UI as needed
+        progress = databaseClass.readEntry("light");
+        displayText.setText("Luminosity " + progress + "%");
 
         lightBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -44,6 +45,11 @@ public class LightControl extends AppCompatActivity {
             }
         });
 
+    }
+    
+    protected void onPause(Bundle savedInstanceState){
+        // write the new values to the database
+        databaseClass.write("light", progress);
     }
 }
 
