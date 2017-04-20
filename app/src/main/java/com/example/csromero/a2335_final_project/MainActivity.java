@@ -180,9 +180,9 @@ public class MainActivity extends AppCompatActivity implements KitchenControl.On
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Kitchen";
                 case 1:
-                    return "SECTION 2";
+                    return "Automobile";
                 case 2:
                     return "SECTION 3";
             }
