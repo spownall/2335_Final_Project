@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements KitchenControl.OnFragmentListItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements KitchenControl.OnFragmentListItemSelectedListener, OnItemSelectedListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements KitchenControl.On
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    
+    // reference to the kitchen control fragment
+    private KitchenControl kitchenControl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements KitchenControl.On
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
+        
         /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements KitchenControl.On
         */
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -97,22 +99,77 @@ public class MainActivity extends AppCompatActivity implements KitchenControl.On
      * item that was selected in the fragment.
      * @param position
      */
-
+ 
     @Override
     public void onFragmentListItemSelected(int position) {
+        String newName = "";
+        String newType = "";
+        
         switch (position){
             // TODO Create these UI classes
             case 0:
                 Intent intent = new Intent(this, MicrowaveControl.class);
                 startActivity(intent);
+                break;
             case 1:
                 Intent intent1 = new Intent(this, FridgeControl.class);
                 startActivity(intent1);
+                break;
             case 2:
                 Intent intent2 = new Intent(this, LightControl.class);
                 startActivity(intent2);
+                break;
             case 3:
+                // This is the "Add new option" case
+                // creates a custom dialog to demand the user for a new entry
+                final Dialog dialog = new Dialog(context);
+			    dialog.setContentView(R.layout.custom);
+			    dialog.setTitle("Add New Item");
+
+			    // initialize the custom dialog components
+			    TextView text = (TextView) dialog.findViewById(R.id.text);
+			    text.setText("Choose an item to add to the list: ");
+                
+                Spinner spinner = (Spinner) findViewById(R.id.spinner);
+                // Create an ArrayAdapter using the string array and a default spinner layout
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.kitchen_items_list, android.R.layout.simple_spinner_item);
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Apply the adapter to the spinner
+                spinner.setAdapter(adapter);
+                spinner.setOnItemSelectedListener(this);
+                
+                EditText edit = (EditText) findViewById(R.id.edit);
+
+			    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+			    // if button is clicked, close the custom dialog and add any new items to the list
+			    dialogButton.setOnClickListener(new OnClickListener() {
+				    @Override
+				    public void onClick(View v) {
+                        // update the listview with the new entry
+                        kitchenControl.kitchenItemNameList.add(newType);
+                        kitchenControl.kitchenAdapter.notifyDataSetChanged();
+				    	dialog.dismiss();
+				    }
+			    });
+                dialog.show();
+                break;
         }
+        
+    public void onItemSelected(AdapterView<?> parent, View view,
+            int pos, long id) {
+        // An item in the dialog list was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+        newName = dialog.edit.getText();
+        newType = parent.getItemAtPosition(pos).getText();
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {  
+        
+    }
+        
+}
     }
 
     /**
@@ -167,8 +224,9 @@ public class MainActivity extends AppCompatActivity implements KitchenControl.On
                 // Return a PlaceholderFragment (defined as a static inner class below).
                 return PlaceholderFragment.newInstance(position + 1);
             } else {
-                // return a kitchen control activity fragment
-                return KitchenControl.newInstance();
+                // return a kitchen control activity fragment and keep the reference for later use
+                kitchenControl = KitchenControl.newInstance();
+                return kitchenControl;
             }
         }
 
