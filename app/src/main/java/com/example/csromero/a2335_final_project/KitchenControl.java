@@ -61,6 +61,9 @@ public class KitchenControl extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_kitchen_control, container, false);
+        
+        // get the database object, read previous entries and update the UI as needed
+        kitchenItemNameList = new ArrayList<>(Arrays.asList(arrayStringsdatabaseClass.readAllEntries()));
 
         // get the listView UI element from the view
         kitchenList = (ListView) view.findViewById(R.id.kitchen_list);
